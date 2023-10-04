@@ -1,0 +1,31 @@
+# Author: Sakthi Santhosh
+# Created on: 25/08/2023
+services:
+  flask_app:
+    build:
+      target: final
+    env_file:
+      - ./.env
+    stop_signal: SIGINT
+    depends_on:
+      - postgres
+    networks:
+      - url_shortner
+    ports:
+      - 5000:5000
+    container_name: flask-app
+
+  postgres:
+    image: postgres:15.4-alpine3.18
+    env_file:
+      - ./.env
+    networks:
+      - url_shortner
+    ports:
+      - 5432:5432
+    container_name: postgres
+
+networks:
+  url_shortner:
+    driver: bridge
+    name: url-shortner-app
